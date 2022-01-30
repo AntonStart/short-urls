@@ -4,9 +4,6 @@ import com.example.urlapp.entity.UrlLine;
 import com.example.urlapp.repos.UrlRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +17,8 @@ public class UrlService {
         this.urlRepo = urlRepo;
     }
 
-    //метод для фильтрации содержимого
-    //строится на основании Table 2.3. Supported keywords inside method names
+    //методы
+    //строятся на основании Table 2.3. Supported keywords inside method names
     // из https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
     //метод поиска по id
     Optional<UrlLine> findById(Integer id){
@@ -40,21 +37,28 @@ public class UrlService {
         return urlRepo.findByUrlFullContains(pieceOfUrl);
     }
     //метод удаления по id
-    public void deleteById(Integer id) {
-        urlRepo.deleteById(id);
+    public Boolean deleteById(Integer id) {
+        if (urlRepo.findById(id).isPresent()) {
+            urlRepo.deleteById(id);
+            return true;
+        } else return false;
     }
 
     public Iterable<UrlLine> findAll() {
         return urlRepo.findAll();
     }
 
-    public void save(UrlLine urlLine) {
-        urlRepo.save(urlLine);
+    public UrlLine save(UrlLine urlLine) {
+        return urlRepo.save(urlLine);
     }
 
-    public void deleteByUrl(String url) {
+    /*public Boolean deleteByUrl(String url) {
         List<UrlLine> urlLines = urlRepo.findByUrlFullContains(url);
-        if (!urlLines.isEmpty())
-        urlRepo.deleteById(urlLines.get(0).getId());
-    }
+        if (!urlLines.isEmpty()) {
+            urlRepo.deleteById(urlLines.get(0).getId());
+            return true;
+        }
+        else return false;
+    }*/
+
 }

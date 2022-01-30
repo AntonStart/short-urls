@@ -1,8 +1,6 @@
 package com.example.urlapp.entity;
 
-import jdk.jfr.DataAmount;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,23 +12,23 @@ public class UrlLine {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
+    // поле - полный URL
     private String urlFull;
-
+    // поле - сгенерированный короткий URL
     private String urlCrop;
-
+    // поле - счётчик неуникальных переходов по urlCrop
     private Integer count;
-
+    // поле - счётчик уникальных переходов по urlCrop
     private Integer uniqueCount;
 
     public UrlLine() {
     }
 
-    public UrlLine(String url, Integer count, Integer uniqueCount) {
+    public UrlLine(String url) {
         this.urlFull = url;
-        this.urlCrop = urlToMiniUrl(url);
-        this.count = count;
-        this.uniqueCount = uniqueCount;
+        this.urlCrop = urlToMiniUrl();
+        this.count = 0;
+        this.uniqueCount = 0;
     }
 
     public Integer getId() {
@@ -73,8 +71,11 @@ public class UrlLine {
         this.uniqueCount = uniqueCount;
     }
 
-    //метод для укорачивания ссылки(примитивный алгоритм)
-    private static String urlToMiniUrl(String url) {
+    //метод для укорачивания UrlFull
+    // (примитивный алгоритм 4 буквы + случайное число до 10000)
+    // в последствии следует заменить другим алгоритмом
+    //или осуществлять проверку на потенциальные коллизии
+    private static String urlToMiniUrl() {
         String crop = "";
         Random r = new Random();
         for (int i = 0; i < 4; i++) {
