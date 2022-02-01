@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UrlRepo extends CrudRepository<UrlLine, Integer> {
     //методы CRUD для текущего репозитория строятся на основе CrudRepository
+    // магия в общем
     //Table 2.3. Supported keywords inside method names
     // из https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
 

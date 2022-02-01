@@ -17,48 +17,36 @@ public class UrlService {
         this.urlRepo = urlRepo;
     }
 
-    //методы
-    //строятся на основании Table 2.3. Supported keywords inside method names
-    // из https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
-    //метод поиска по id
+    //поиск сущности из таблицы по id
     Optional<UrlLine> findById(Integer id){
         return urlRepo.findById(id);
     }
-    //метод поиска по короткой ссылке
+    //поиск сущности из таблицы по короткой ссылке
     public Optional<UrlLine> findByUrlCrop(String urlCrop){
         return urlRepo.findByUrlCrop(urlCrop);
     }
-    //метод поиска по длинной ссылке
+    //поиск сущности из таблицы по длинной ссылке
     public Optional<UrlLine> findByUrlFull(String urlFull){
         return urlRepo.findByUrlFull(urlFull);
     }
-    //метод поиска по частичному совпадению
+    //поиск по частичному совпадению
     public List<UrlLine> findByUrlFullContains(String pieceOfUrl){
         return urlRepo.findByUrlFullContains(pieceOfUrl);
     }
-    //метод удаления по id
+    //удаление сущности из таблицы по id
     public Boolean deleteById(Integer id) {
         if (urlRepo.findById(id).isPresent()) {
             urlRepo.deleteById(id);
             return true;
         } else return false;
     }
-
+    //список со всем содержимым таблицы
     public Iterable<UrlLine> findAll() {
         return urlRepo.findAll();
     }
-
+    //сохранение/обновление сущности
     public UrlLine save(UrlLine urlLine) {
         return urlRepo.save(urlLine);
     }
-
-    /*public Boolean deleteByUrl(String url) {
-        List<UrlLine> urlLines = urlRepo.findByUrlFullContains(url);
-        if (!urlLines.isEmpty()) {
-            urlRepo.deleteById(urlLines.get(0).getId());
-            return true;
-        }
-        else return false;
-    }*/
 
 }
